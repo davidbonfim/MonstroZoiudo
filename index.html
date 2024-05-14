@@ -1,0 +1,109 @@
+<div id="login-form">
+    <div class="character">
+      <div class="eyes">
+        <div class="eye"></div>
+        <div class="eye"></div>
+      </div>
+    </div>
+    <input class="username" type="text" placeholder="username" maxlength="20">
+    <input class="password" type="password" placeholder="password">
+  </div>
+  <script>
+  const loginForm = document.querySelector('#login-form')
+  const characterEyes = loginForm.querySelector('.eyes')
+  const usernameInput = loginForm.querySelector('.username')
+  const passwordInput = loginForm.querySelector('.password')
+  
+  function updateEyeballPosition(value) {
+    if (typeof value !== 'number') {
+      const offset = usernameInput.value.length * (100 / usernameInput.maxLength)
+      value = Math.max(Math.min(offset, 90), 10)
+    }
+  
+    characterEyes.style.setProperty('--eye-ball-offset', `${value}%`);
+  }
+  
+  usernameInput.addEventListener('keyup', () => updateEyeballPosition())
+  usernameInput.addEventListener('focus', () => updateEyeballPosition())
+  usernameInput.addEventListener('blur', () => updateEyeballPosition(50))
+  
+  passwordInput.addEventListener('focus', () => characterEyes.classList.add('closed'))
+  passwordInput.addEventListener('blur', () => characterEyes.classList.remove('closed'))
+  </script>
+  <style>
+  #login-form {
+    --size: 300px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10%;
+    width: var(--size);
+    min-height: var(--size);
+    border-radius: 10%;
+    background-color: #d9d1d1;
+  }
+  
+  #login-form input {
+    padding: 0.25em;
+    border-radius: 0.5em;
+  }
+  
+  .character {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: calc(var(--size) / 3);
+    height: calc(var(--size) / 3);
+    border-radius: 40% 40% 0 0;
+    background-color: #d95151;
+  }
+  
+  .character .eyes {
+    --eye-ball-offset: 50%;
+    --eye-ball-size: 35%;
+  
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+  }
+  
+  .character .eyes .eye {
+    position: relative;
+    transition: height 0.2s ease-in;
+    overflow: hidden;
+    width: 35%;
+    border-radius: 50%;
+    background-color: #190000;
+  }
+  
+  .character .eyes .eye::before {
+    content: '';
+    display: block;
+    transition: padding-top 0.2s ease-in;
+    padding-top: 100%;
+  }
+  
+  .character .eyes.closed .eye::before {
+    padding-top: 2px;
+  }
+  
+  .character .eyes .eye::after {
+    content: '';
+    position: absolute;
+    bottom: 5%;
+    left: var(--eye-ball-offset);
+    transform: translateX(-50%);
+    transition: all 0.2s ease-in;
+    width: var(--eye-ball-size);
+    height: var(--eye-ball-size);
+    border-radius: 50%;
+    background-color: #faffff;
+  }
+  
+  .character .eyes.closed .eye::after {
+    height: 0;
+  }
+  </style>
